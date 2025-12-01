@@ -84,3 +84,4 @@ It is also possible to find other sensors for more versatile air quality monitor
 ## References:
 BH1750：[[ref](https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf)]
 SCD-30: https://learn.adafruit.com/adafruit-scd30
+NeoPixel Ring - 16 x 5050 RGB LED ：https://www.adafruit.com/product/1463
