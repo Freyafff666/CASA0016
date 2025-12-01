@@ -53,8 +53,9 @@ Shows startup animation
 White: CO₂ < 800 ppm (Excellent)
 Yellow: CO₂ 800-1500 ppm (Consider ventilation)
 Red: CO₂ > 1500 ppm (Ventilate immediately)
-### Blinking: Any color blinks when light < 50 lux
-Sleep Mode (LEDs off):
+### Blinking: 
+Any color blinks when light < 400 lux
+### Sleep Mode (LEDs off):
 Activated when no motion detected for 30 seconds
 Conserves power when room is unoccupied
 
