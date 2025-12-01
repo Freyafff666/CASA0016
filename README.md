@@ -26,7 +26,7 @@ This project creates an interactive environmental guardian for study spaces. By 
 |BH1750|Digital light intensity sensor measuring illuminance in lux|
 |WPSE314 (PIR Sensor)|Passive infrared motion detector for occupancy sensing|
 |CJMCU-2812-16|Integrated 16-LED WS2812B module with built-in microcontroller|
-|3.3V/5V Power Supply|External power for stable operation|
+
 
 ## Pin Connection Table
 |Hardware|Power|Data|Notes|
