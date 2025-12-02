@@ -13,6 +13,7 @@
 #include <Wire.h>
 #include <Adafruit_NeoPixel.h>
 #include <Adafruit_SCD30.h>
+#include <BH1750.h>
 
 // ====== PIN DEFINITIONS ======
 #define PIR_PIN 1           // PIR sensor output
@@ -23,16 +24,20 @@
 #define CO2_EXCELLENT 800   // ppm - White
 #define CO2_WARNING 1500    // ppm - Yellow to Red
 #define LIGHT_GOOD 400      // lux - Below this, LEDs blink
+#define LIGHT_MIN 0         // Minimum valid light reading
+#define LIGHT_MAX 65535     // Maximum valid light reading
 
 // ====== TIMING CONSTANTS ======
 #define SENSOR_READ_INTERVAL 2000    // Read sensors every 2s
 #define MOTION_TIMEOUT 30000         // 30s timeout for sleep mode
 #define BLINK_INTERVAL 600           // 600ms for blink effect
 #define SERIAL_PRINT_INTERVAL 3000   // Print data every 3s
+#define BH1750_MEASURE_INTERVAL 120  // BH1750 measurement interval (ms)
 
 // ====== GLOBAL OBJECTS ======
 Adafruit_SCD30 scd30;
 Adafruit_NeoPixel leds = Adafruit_NeoPixel(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
+BH1750 lightMeter;
 
 // ====== STATE VARIABLES ======
 enum SystemState { BOOTING, ACTIVE, SLEEP };
@@ -45,6 +50,7 @@ bool motionDetected = false;
 bool lightIsGood = true;
 bool blinkState = false;
 bool scd30Available = false;
+bool bh1750Available = false;
 
 unsigned long lastMotionTime = 0;
 unsigned long lastSensorRead = 0;
@@ -52,9 +58,12 @@ unsigned long lastBlinkTime = 0;
 unsigned long lastSerialOutput = 0;
 unsigned long bootTime = 0;
 unsigned long scd30StartTime = 0;
+unsigned long lastLightMeasurement = 0;
 
 float currentCO2 = 0;
-float currentLight = 500.0;  // Default light value
+float currentLight = 0.0;
+float lightBuffer[5] = {0};  // Buffer for light value smoothing
+uint8_t lightBufferIndex = 0;
 
 // ====== FUNCTION DECLARATIONS ======
 void performBootSequence();
@@ -72,6 +81,9 @@ void printSensorData();
 void testPIRSensor();
 void scanI2CDevices();
 void readSCD30Data();
+bool initializeBH1750();
+void readBH1750Data();
+float smoothLightValue(float newValue);
 
 // ====== SETUP ======
 void setup() {
@@ -107,7 +119,10 @@ void setup() {
   delay(100);
   scanI2CDevices();
   
-  // 5. Initialize SCD-30 CO2 sensor
+  // 5. Initialize BH1750 light sensor
+  bh1750Available = initializeBH1750();
+  
+  // 6. Initialize SCD-30 CO2 sensor
   Serial.println("\n[SCD-30] Initializing CO2 sensor...");
   if (scd30.begin()) {
     scd30Available = true;
@@ -122,8 +137,14 @@ void setup() {
     showErrorAnimation();
   }
   
+  // 7. Initialize light value buffer
+  for (int i = 0; i < 5; i++) {
+    lightBuffer[i] = 500.0;  // Default value
+  }
+  
   currentState = ACTIVE;
   lastMotionTime = millis();
+  lastLightMeasurement = millis();
   
   Serial.println("\n[SYSTEM] Ready for operation!");
   Serial.println("  Note: SCD-30 may take 30 seconds for first reading");
@@ -133,7 +154,6 @@ void setup() {
 // ====== MAIN LOOP ======
 void loop() {
   unsigned long currentTime = millis();
-  unsigned long uptime = currentTime - bootTime;
   
   // 1. Check motion sensor
   checkMotion();
@@ -222,6 +242,61 @@ void scanI2CDevices() {
   }
 }
 
+bool initializeBH1750() {
+  Serial.println("\n[BH1750] Initializing light sensor...");
+  
+  // Try both possible addresses
+  if (lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0x23)) {
+    Serial.println("  BH1750: OK (Address: 0x23)");
+    return true;
+  } else if (lightMeter.begin(BH1750::CONTINUOUS_HIGH_RES_MODE, 0x5C)) {
+    Serial.println("  BH1750: OK (Address: 0x5C)");
+    return true;
+  } else {
+    Serial.println("  BH1750: NOT FOUND");
+    Serial.println("  Check: 5V power, SDA(Pin11), SCL(Pin12)");
+    showWarningAnimation();
+    return false;
+  }
+}
+
+void readBH1750Data() {
+  unsigned long currentTime = millis();
+  
+  // Check if measurement is ready (BH1750 needs time between measurements)
+  if (currentTime - lastLightMeasurement >= BH1750_MEASURE_INTERVAL) {
+    if (lightMeter.measurementReady()) {
+      float rawLight = lightMeter.readLightLevel();
+      
+      // Validate light reading
+      if (rawLight >= LIGHT_MIN && rawLight <= LIGHT_MAX) {
+        // Apply smoothing
+        currentLight = smoothLightValue(rawLight);
+        lightIsGood = (currentLight >= LIGHT_GOOD);
+      } else {
+        // Invalid reading, keep previous value
+        Serial.println("[BH1750] Warning: Invalid light reading");
+      }
+      
+      lastLightMeasurement = currentTime;
+    }
+  }
+}
+
+float smoothLightValue(float newValue) {
+  // Update circular buffer
+  lightBuffer[lightBufferIndex] = newValue;
+  lightBufferIndex = (lightBufferIndex + 1) % 5;
+  
+  // Calculate moving average
+  float sum = 0;
+  for (int i = 0; i < 5; i++) {
+    sum += lightBuffer[i];
+  }
+  
+  return sum / 5.0;
+}
+
 void checkMotion() {
   bool newMotion = digitalRead(PIR_PIN);
   
@@ -240,10 +315,18 @@ void checkMotion() {
 }
 
 void readSensors() {
-  // For now, use simulated light value
-  // In future, add BH1750: currentLight = lightMeter.readLightLevel();
-  currentLight = 500.0; // Simulated light value
-  lightIsGood = (currentLight >= LIGHT_GOOD);
+  // Read light sensor if available
+  if (bh1750Available) {
+    readBH1750Data();
+  } else {
+    // Fallback to simulated light value for testing
+    static unsigned long lastSimChange = 0;
+    if (millis() - lastSimChange > 10000) { // Change every 10 seconds
+      currentLight = random(50, 1200); // Random between 50-1200 lux
+      lightIsGood = (currentLight >= LIGHT_GOOD);
+      lastSimChange = millis();
+    }
+  }
   
   // Read CO2 from SCD-30 if available
   if (scd30Available) {
@@ -275,9 +358,6 @@ void readSCD30Data() {
   // If we reach here, SCD-30 is still warming up or has no data
   unsigned long currentTime = millis();
   if (currentTime - scd30StartTime < 30000) { // First 30 seconds
-    Serial.print("[SCD-30] Warming up... ");
-    Serial.print((30000 - (currentTime - scd30StartTime)) / 1000);
-    Serial.println(" seconds remaining");
     airStatus = AIR_NO_DATA;
   }
 }
@@ -441,12 +521,17 @@ void printSensorData() {
   
   // Light Data
   Serial.print("  Light: ");
-  Serial.print(currentLight);
-  Serial.print(" lux");
-  if (lightIsGood) {
-    Serial.println(" ✅ Good");
+  if (bh1750Available) {
+    Serial.print(currentLight);
+    Serial.print(" lux");
+    if (lightIsGood) {
+      Serial.println(" ✅ Good");
+    } else {
+      Serial.println(" ⚠️ Too dark - Turn on lights!");
+    }
   } else {
-    Serial.println(" ⚠️ Too dark - Turn on lights!");
+    Serial.print(currentLight);
+    Serial.println(" lux (Simulated)");
   }
   
   // Motion and System State
