@@ -33,7 +33,7 @@ This project creates an interactive environmental guardian for study spaces. By 
 |:-------:|:---:|:--:|:--:|
 |SCD-30 CO₂ Sensor|5V → Breadboard + rail  GND → Breadboard - rail|	SDA → Pin 11  SCL → Pin 12|I2C address: 0x61|
 |BH1750 Light Sensor|5V → Breadboard + rail  GND → Breadboard - rail|SDA → Pin 11  SCL → Pin 12|I2C address: 0x23|
-|PIR Sensor (WPSE314)|5V → Breadboard + rail  GND → Breadboard - rail|OUT → Pin 1|Sensitivity adjustable via potentiometer|
+|PIR Sensor (WPSE314)|5V → Breadboard + rail  GND → Breadboard - rail|OUT → Pin 5|Sensitivity adjustable via potentiometer|
 |CJMCU-2812-16|VCC → 5V rail  GND → GND rail|DIN → Pin 6 (via 330Ω resistor)|CJMCU module has built-in logic level shifting|
 
 ## System Operation Logic
