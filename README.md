@@ -5,18 +5,8 @@ During intensive study sessions or deadline periods, students often remain seate
 The "Mom Ball" addresses this issue by providing gentle, non-intrusive reminders to maintain a healthy study environment, acting as a digital companion that cares for your well-being during long study sessions.
 
 ## Aim
-This project creates an interactive environmental guardian for study spaces. By continuously monitoring CO₂ concentration, ambient light, and room occupancy, it provides intuitive feedback through a programmable 16-LED display module (CJMCU-2812-16) and comprehensive data logging via serial interface. When air quality declines or lighting becomes inadequate, the system responds with graduated visual warnings—guiding users toward healthier study habits through gentle reminders to ventilate and illuminate their workspace appropriately.
+This project creates an interactive environmental guardian for study spaces. By continuously monitoring CO₂ concentration,temperature, ambient light, and room occupancy, it provides intuitive feedback through a programmable 16-LED display module (CJMCU-2812-16) and comprehensive data logging via serial interface. When air quality declines or lighting becomes inadequate, the system responds with graduated visual warnings—guiding users toward healthier study habits through gentle reminders to ventilate and illuminate their workspace appropriately.
 
-## Boards and Sensors
-
-1. Arduino MKR WiFi 1010: [[ref](https://store.arduino.cc/products/arduino-uno-wifi-rev2)](https://store.arduino.cc/products/arduino-mkr-wifi-1010)
-
-2. 
-<picture>>>>>>>>>>>>>>>
-
-3.
-
-## Construction of the Physical Prototype
 
 ## Hardware Components
 |Hardware|Description|
@@ -31,16 +21,17 @@ This project creates an interactive environmental guardian for study spaces. By 
 ## Pin Connection Table
 |Hardware|Power|Data|Notes|
 |:-------:|:---:|:--:|:--:|
-|SCD-30 CO₂ Sensor|5V → Breadboard + rail  GND → Breadboard - rail|	SDA → Pin 11  SCL → Pin 12|I2C address: 0x61|
+|SCD-30 Sensor|5V → Breadboard + rail  GND → Breadboard - rail|	SDA → Pin 11  SCL → Pin 12|I2C address: 0x61|
 |BH1750 Light Sensor|5V → Breadboard + rail  GND → Breadboard - rail|SDA → Pin 11  SCL → Pin 12|I2C address: 0x23|
 |PIR Sensor (WPSE314)|5V → Breadboard + rail  GND → Breadboard - rail|OUT → Pin 5|Sensitivity adjustable via potentiometer|
 |CJMCU-2812-16|VCC → 5V rail  GND → GND rail|DIN → Pin 6 (via 330Ω resistor)|CJMCU module has built-in logic level shifting|
 
 ## System Operation Logic
-## Sensor Thresholds and Responses
+### Sensor Thresholds and Responses
 |Parameter|Optimal Range|Warning Threshold|Alert Threshold|LED Response|
 |:-------:|:---:|:--:|:--:|:--:|
 |CO₂ Concentration|< 800 ppm|800-1500 ppm|> 1500 ppm|White → Yellow → Red|
+|Temperature Change|≤18°C|18°C- 28°C|≥28°C|Blue → White → Green|
 |Light Intensity|> 50 lux|N/A|< 50 lux|Current color blinks|
 |Occupancy Status|Present|N/A|Absent > 30s|LEDs turn off|
 
@@ -53,6 +44,10 @@ Shows startup animation
 White: CO₂ < 800 ppm (Excellent)
 Yellow: CO₂ 800-1500 ppm (Consider ventilation)
 Red: CO₂ > 1500 ppm (Ventilate immediately)
+### Process Monitoring (Color varies by Status)
+Blue: Initializing / Standby
+White: Operating Normally / In Optimal Range
+Green: Process Complete / Optimal Condition Achieved
 ### Blinking: 
 Any color blinks when light < 400 lux
 ### Sleep Mode (LEDs off):
@@ -62,13 +57,13 @@ Conserves power when room is unoccupied
 
 ## Process 
 
-1.progress picture
+### 1.progress picture
 
-2. prototype
+### 2.prototype
 
-3. Video: 
+### 3.Video
 
-4.website
+
 
 ## Reflection and Challenges
 1. 3D printing -- more stable 
@@ -80,8 +75,8 @@ Air quality index includes not only Particulate Matter but also other gases such
 It is also possible to find other sensors for more versatile air quality monitoring.
 
 
+## References
 
-## References:
-BH1750：[[ref](https://www.mouser.com/datasheet/2/348/bh1750fvi-e-186247.pdf)]
-SCD-30: https://learn.adafruit.com/adafruit-scd30
-NeoPixel Ring - 16 x 5050 RGB LED ：https://www.adafruit.com/product/1463
+1.  **Arduino** (n.d.) Arduino MKR WiFi 1010. Available at: https://www.arduino.cc/en/Guide/MKRWiFi1010 (Accessed: 6 December 2025).
+2.  **Adafruit** (n.d.) SCD-30 CO₂ / Temperature / Humidity Sensor. Available at: https://www.adafruit.com/product/4867 (Accessed: 6 December 2025).
+3.  **Velleman** (2018) VMA314 PIR motion sensor for Arduino: User manual. Available at: https://static.rapidonline.com/pdf/73-4635m_v1.pdf (Accessed: 6 December 2025).
