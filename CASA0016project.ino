@@ -115,7 +115,7 @@ void setup() {
   Serial.println("       MOM BALL - DUAL DISPLAY MODE");
   Serial.println("========================================");
   Serial.println("Left LEDs: CO2 Level");
-  Serial.println("Right LEDs: Temperature (纯色: Blue/White/Green)");
+  Serial.println("Right LEDs: Temperature (Blue/White/Green)");
   Serial.println("Temp Rules: ≤18°C=Blue, 18-28°C=White, ≥28°C=Green");
   Serial.println("PIR Detection: Every 5 seconds");
   Serial.println("Auto Sleep: 30 seconds no motion");
@@ -174,7 +174,7 @@ void setup() {
   
   Serial.println("\n[SYSTEM] Ready for operation!");
   Serial.println("  CO2 Range: <800ppm(White) 800-1500ppm(Yellow) >1500ppm(Red)");
-  Serial.println("  Temp Range: ≤18°C=Blue, 18-28°C=White, ≥28°C=Green (纯色)");
+  Serial.println("  Temp Range: ≤18°C=Blue, 18-28°C=White, ≥28°C=Green ");
   Serial.println("  PIR Detection: Every 5 seconds");
   Serial.println("  Auto Sleep: 30 seconds no motion");
   Serial.println("  Note: SCD-30 may take 30 seconds for first reading");
@@ -419,11 +419,11 @@ void readSCD30Data() {
 
 void updateTemperatureColor() {
   if (currentTemp <= TEMP_LOW) {
-    tempColorState = TEMP_BLUE;      // ≤18°C: 蓝色
+    tempColorState = TEMP_BLUE;      // ≤18°C: 
   } else if (currentTemp < TEMP_HIGH) {
-    tempColorState = TEMP_WHITE;     // 18-28°C: 白色
+    tempColorState = TEMP_WHITE;     // 18-28°C: 
   } else {
-    tempColorState = TEMP_GREEN;     // ≥28°C: 绿色
+    tempColorState = TEMP_GREEN;     // ≥28°C: 
   }
 }
 
