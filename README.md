@@ -86,5 +86,5 @@ It is also possible to find other sensors for more versatile air quality monitor
 
 1.Adafruit (n.d.) *SCD-30 CO₂ / Temperature / Humidity Sensor*. Available at: https://www.adafruit.com/product/4867 (Accessed: 9 December 2025).  
 2.Arduino (n.d.) *Arduino MKR WiFi 1010*. Available at: https://www.arduino.cc/en/Guide/MKRWiFi1010 (Accessed: 9 December 2025).  
-3.Corry, K. (2018) *Carbon dioxide can impact human cognitive performance [UCL News]*. Available at: https://www.ucl.ac.uk/news/2018/dec/carbon-dioxide-can-impact-human-cognitive-performance (Accessed: 9 December 2025).  
+3.Corry, K. (2018) *Carbon dioxide can impact human cognitive performance [UCL News]*. Available at: https://www.ucl.ac.uk/news/2018/dec/carbon-dioxide-can-impact-human-cognitive-performance  (Accessed: 9 December 2025).  
 4.Velleman (2018) *VMA314 PIR motion sensor for Arduino: User manual*. Available at: https://static.rapidonline.com/pdf/73-4635m_v1.pdf (Accessed: 9December 2025).  
