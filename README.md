@@ -59,11 +59,11 @@ Conserves power when room is unoccupied
 
 ### Complete Prototype Assembly and 3D printing
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Freyafff666/CASA0016/main/images/momball1.jpg" 
-       alt="Mom Ball Device" 
-       width="350">
-</p>
+  
+| <img src="https://raw.githubusercontent.com/Freyafff666/CASA0016/main/images/momball1.jpg" width="300"> | <img src="https://raw.githubusercontent.com/Freyafff666/CASA0016/main/images/momball2.jpg" width="300"> |
 
+
+</p>
 
 
 
