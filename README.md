@@ -68,9 +68,8 @@ Conserves power when room is unoccupied
 
 
 ### Video
-[![Mom Ball Vedio](https://img.youtube.com/vi/o4OUL9V8Uqk/0.jpg)](https://youtu.be/o4OUL9V8Uqk)  
-*click to watch the vedio*
-
+[![Mom Ball Vedio](https://img.youtube.com/vi/eC8be-Wh7bA/0.jpg)](https://youtu.be/eC8be-Wh7bA)  
+*click the picture to watch the vedio*
 
 ## Reflection and Challenges
 ### 1. 3D printing  
