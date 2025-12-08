@@ -55,14 +55,19 @@ Activated when no motion detected for 30 seconds
 Conserves power when room is unoccupied
 
 
-## Process 
 
-### 1.progress picture
-![Momball1](https://raw.githubusercontent.com/Freyafff666/CASA0016/main/images/momball1.jpg)
 
-### 2.prototype
+### Complete Prototype Assembly and 3D printing
+<p align="center">
+  <img src="https://raw.githubusercontent.com/Freyafff666/CASA0016/main/images/momball1.jpg" 
+       alt="Mom Ball Device" 
+       width="350">
+</p>
 
-### 3.Video
+
+
+
+### Video
 
 
 
