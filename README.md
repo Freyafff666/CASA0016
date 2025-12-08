@@ -32,7 +32,7 @@ This project creates an interactive environmental guardian for study spaces. By 
 |:-------:|:---:|:--:|:--:|:--:|
 |CO₂ Concentration|< 800 ppm|800-1500 ppm|> 1500 ppm|White → Yellow → Red|
 |Temperature Change|≤18°C|18°C- 28°C|≥28°C|Blue → White → Green|
-|Light Intensity|> 50 lux|N/A|< 50 lux|Current color blinks|
+|Light Intensity|> 400 lux|N/A|< 400 lux|Current color blinks|
 |Occupancy Status|Present|N/A|Absent > 30s|LEDs turn off|
 
 ## State Machine Behavior
