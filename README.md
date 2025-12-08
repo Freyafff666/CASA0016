@@ -37,17 +37,17 @@ This project creates an interactive environmental guardian for study spaces. By 
 
 ## State Machine Behavior
 ### Boot Sequence (Blue LEDs):
-System initializes sensors
-Connects to WiFi 
-Shows startup animation
+System initializes sensors  
+Connects to WiFi  
+Shows startup animation  
 ### Active Monitoring (Color varies by CO₂ level):
-White: CO₂ < 800 ppm (Excellent)
-Yellow: CO₂ 800-1500 ppm (Consider ventilation)
-Red: CO₂ > 1500 ppm (Ventilate immediately)
-### Process Monitoring (Color varies by Status)
-Blue: Initializing / Standby
-White: Operating Normally / In Optimal Range
-Green: Process Complete / Optimal Condition Achieved
+White: CO₂ < 800 ppm (Excellent)  
+Yellow: CO₂ 800-1500 ppm (Consider ventilation)  
+Red: CO₂ > 1500 ppm (Ventilate immediately)  
+### Active Monitoring (Color varies by Temperature level):
+Blue: ≤18°C(cold)  
+White: 18°C- 28°C(best)  
+Green: ≥28°C(hot)  
 ### Blinking: 
 Any color blinks when light < 400 lux
 ### Sleep Mode (LEDs off):
